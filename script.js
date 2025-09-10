@@ -8,8 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainContentDiv = document.getElementById('main-content');
     const popupContainer = document.getElementById('popupContainer');
 
+    // 新增：为标题添加故障效果类
+    const mainTitle = document.querySelector('.container h1');
+    mainTitle.classList.add('glitch-text');
+
     // 新增：检查是否已达成契约的标记
-    const contractCompleted = localStorage.getItem('jigoku_tsushin_contract_completed');
+    //const contractCompleted = localStorage.getItem('jigoku_tsushin_contract_completed');
 
     // 新增：404 页面显示函数
     function show404Page() {
@@ -29,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 新增：时间判断逻辑
-    function checkTimeAndContract() {
+ function checkTimeAndContract() {
         // 如果 URL 包含 /admin，则无视所有限制
         if (window.location.pathname.includes('/admin')) {
             return true;
@@ -62,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 0; i < totalLycoris; i++) {
             const lycoris = document.createElement('div');
             lycoris.classList.add('lycoris');
-            
+
             // 随机位置
             const x = Math.random() * 100;
             const size = Math.random() * 20 + 10;
@@ -103,9 +107,78 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // 新增：噪音音频部分
+    const staticNoise = new Audio('noise.mp3'); // 确保此文件存在于网站目录中
+    let isNoisePlaying = false;
+    const audioDuration = 15; // 音频总长度为15秒
+    const playDuration = 2; // 播放时长为2秒
+
+    // 新增：效果列表
+    const visualEffects = ['invert-effect', 'tv-static'];
+
+    function playRandomStaticNoise() {
+        // 频繁触发，80%的几率
+        if (Math.random() < 0.8 && !isNoisePlaying) {
+            isNoisePlaying = true;
+
+            // 随机选择开始时间，确保有足够的时长来播放2秒
+            const maxStartTime = audioDuration - playDuration;
+            const startTime = Math.random() * maxStartTime;
+
+            // 随机选择并应用一个效果
+            const randomEffect = visualEffects[Math.floor(Math.random() * visualEffects.length)];
+            document.body.classList.add(randomEffect);
+
+            // 在播放噪音前0.5秒添加反色效果
+            setTimeout(() => {
+                // document.body.classList.add('invert-effect'); // 移除旧的固定效果
+                staticNoise.currentTime = startTime;
+                staticNoise.volume = 0.5;
+                staticNoise.play().catch(e => {
+                    console.error("噪音播放失败:", e);
+                    isNoisePlaying = false;
+                    // 如果播放失败，也要移除反色效果
+                    // document.body.classList.remove('invert-effect');
+                    document.body.classList.remove(randomEffect); // 移除随机效果
+                });
+            }, 500);
+
+            // 2.5秒后（噪音播放2秒 + 提前0.5秒），停止播放并移除反色效果
+            setTimeout(() => {
+                staticNoise.pause();
+                staticNoise.currentTime = 0;
+                isNoisePlaying = false;
+                // 移除反色效果
+                document.body.classList.remove(randomEffect);
+            }, (playDuration + 0.5) * 1000);
+        }
+    }
+
+    // 新增：循环播放噪音的函数
+    function startPeriodicNoise() {
+        // 每5到15秒随机播放一次噪音
+        const randomDelay = Math.random() * (15000 - 5000) + 5000;
+        setTimeout(() => {
+            // 1% 的几率触发关机效果
+            if (Math.random() < 0.01) {
+                document.body.classList.add('tv-turn-off');
+                // 关机效果之后，停止所有交互，并可以调用 show404Page
+                setTimeout(() => {
+                    show404Page();
+                }, 1000); // 关机动画时长
+                return; // 停止递归循环
+            }
+            playRandomStaticNoise();
+            startPeriodicNoise(); // 递归调用以实现循环
+        }, randomDelay);
+    }
+
     function playBgmOnInteraction() {
         if (!mainContentDiv.classList.contains('hidden')) {
-            bgm.play().catch(e => {
+            bgm.play().then(() => {
+                console.log("BGM播放成功，启动噪音循环。");
+                startPeriodicNoise(); // BGM播放成功后，启动噪音循环
+            }).catch(e => {
                 console.error("BGM播放失败:", e);
             });
             document.removeEventListener('click', playBgmOnInteraction);
@@ -138,6 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.closePopup = closePopup;
 
+
     submitBtn.addEventListener('click', () => {
         const targetName = targetNameInput.value.trim();
         if (targetName === '') {
@@ -148,6 +222,14 @@ document.addEventListener('DOMContentLoaded', () => {
             showPopup(content);
             return;
         }
+
+        // 视觉效果保留在提交按钮点击事件中
+        document.body.classList.add('tv-glitch-effect');
+        document.body.classList.add('tv-static');
+        setTimeout(() => {
+            document.body.classList.remove('tv-glitch-effect');
+            document.body.classList.remove('tv-static');
+        }, 1500); // 效果持续1.5秒
 
         const content = `
             <p>${targetName}への恨み、確かに受け止めました。</p>
@@ -172,11 +254,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         <p>しかし、あなたの魂も死後、地獄へと堕ちます。<br>後は、あなたが決めることです。</p>
                     `;
                     document.querySelector('.popup-box').innerHTML = finalContent;
-                    
+
                     setTimeout(() => {
                         show404Page();
                     }, 2000);
-                    
+
                 });
             }
 
@@ -192,5 +274,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 100);
     });
-
 });
