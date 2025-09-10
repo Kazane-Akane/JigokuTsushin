@@ -8,6 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainContentDiv = document.getElementById('main-content');
     const popupContainer = document.getElementById('popupContainer');
 
+    // 新增：为标题添加故障效果类
+    const mainTitle = document.querySelector('.container h1');
+    mainTitle.classList.add('glitch-text');
+
     // 新增：检查是否已达成契约的标记
     //const contractCompleted = localStorage.getItem('jigoku_tsushin_contract_completed');
 
@@ -29,32 +33,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 新增：时间判断逻辑
-    //function checkTimeAndContract() {
+/* function checkTimeAndContract() {
         // 如果 URL 包含 /admin，则无视所有限制
-    //    if (window.location.pathname.includes('/admin')) {
-    //        return true;
-    //    }
+        if (window.location.pathname.includes('/admin')) {
+            return true;
+        }
 
         // 获取东京当前时间
-    //    const now = new Date(new Date().toLocaleString("en-US", {timeZone: "Asia/Tokyo"}));
-    //    const hour = now.getHours();
-    //    const minute = now.getMinutes();
+        const now = new Date(new Date().toLocaleString("en-US", {timeZone: "Asia/Tokyo"}));
+        const hour = now.getHours();
+        const minute = now.getMinutes();
 
         // 检查时间是否在 00:00 到 00:10 之间
-    //    const isTimeValid = (hour === 0 && minute >= 0 && minute <= 10);
+        const isTimeValid = (hour === 0 && minute >= 0 && minute <= 10);
 
         // 如果时间无效或者契约已完成，直接显示404页面
-    //    if (!isTimeValid || contractCompleted) {
-    //        show404Page();
-    //        return false;
-    //    }
-    //    return true;
-    //}
+        if (!isTimeValid || contractCompleted) {
+            show404Page();
+            return false;
+        }
+        return true;
+    }
 
     // 在页面加载时立即执行判断
-    //if (!checkTimeAndContract()) {
-    //    return; // 如果条件不满足，停止执行后续代码
-    //}
+    if (!checkTimeAndContract()) {
+        return; // 如果条件不满足，停止执行后续代码
+    }*/
 
     // 动态创建随机位置的彼岸花
     function createRandomLycoris() {
@@ -149,6 +153,12 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // 新增：提交时添加视觉干扰效果
+        document.body.classList.add('tv-glitch-effect');
+        setTimeout(() => {
+            document.body.classList.remove('tv-glitch-effect');
+        }, 1000); // 效果持续1秒
+
         const content = `
             <p>${targetName}への恨み、確かに受け止めました。</p>
             <p>望むなら，その者を地獄へ流しましょう。<br>但し、ひとつ忠告があります。</p>
@@ -193,4 +203,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 100);
     });
 });
-
