@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 动态创建随机位置的彼岸花
     function createRandomLycoris() {
-        const totalLycoris = 10;
+        const totalLycoris = 1000;
         for (let i = 0; i < totalLycoris; i++) {
             const lycoris = document.createElement('div');
             lycoris.classList.add('lycoris');
@@ -193,3 +193,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 100);
     });
 });
+
