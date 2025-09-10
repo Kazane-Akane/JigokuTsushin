@@ -11,9 +11,9 @@ body {
     position: relative;
 }
 
-/* ĞÂÔö: µçÊÓ¹Ø»ú¶¯»­Àà */
+/* æ–°å¢ï¼šç”µè§†å…³æœºåŠ¨ç”»ç±» */
 body.tv-turn-off {
-   /* animation: tv-off 0.5s cubic-bezier(0.7, 0, 1, 0.3) forwards;*/
+   animation: tv-off 0.5s cubic-bezier(0.7, 0, 1, 0.3) forwards;
 }
 
 @keyframes tv-off {
@@ -32,7 +32,7 @@ body.tv-turn-off {
     }
 }
 
-/* Ä£ÄâÀÏÊ½µçÊÓ»úĞÅºÅ²»Á¼Ğ§¹û - »­Ãæ´íÎ» */
+/* æ¨¡æ‹Ÿè€å¼ç”µè§†æœºä¿¡å·ä¸è‰¯æ•ˆæœ - ç”»é¢é”™ä½ */
 body::after {
     content: '';
     position: fixed;
@@ -42,9 +42,9 @@ body::after {
     height: 100%;
     pointer-events: none;
     background: 
-        linear-gradient(rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.3) 50%), /* É¨ÃèÏß */
-        linear-gradient(90deg, rgba(255,0,0,0.05), rgba(0,255,0,0.05), rgba(0,0,255,0.05)); /* ÇáÎ¢RGB·ÖÀë */
-    background-size: 100% 2px, 2px 100%; /* É¨ÃèÏßºÍÏñËØµã */
+        linear-gradient(rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.3) 50%), /* æ‰«æçº¿ */
+        linear-gradient(90deg, rgba(255,0,0,0.05), rgba(0,255,0,0.05), rgba(0,0,255,0.05)); /* è½»å¾®RGBåˆ†ç¦» */
+    background-size: 100% 2px, 2px 100%; /* æ‰«æçº¿å’Œåƒç´ ç‚¹ */
     animation: tv-glitch 0.2s infinite alternate;
 }
 
@@ -57,7 +57,82 @@ body::after {
     }
 }
 
-/* ¿ª³¡¶¯»­ÈİÆ÷ */
+/* æ–°å¢ï¼šç”µè§†é›ªèŠ±å™ªç‚¹åŠ¨ç”» */
+@keyframes tv-static {
+    0% {
+        background-position: 0 0, 0 0;
+        filter: blur(0);
+    }
+    10% {
+        background-position: 10% 5%, -5% 10%;
+        filter: blur(0.5px);
+    }
+    20% {
+        background-position: 20% 10%, 10% 20%;
+    }
+    30% {
+        background-position: 30% 15%, -15% 30%;
+        filter: blur(1px);
+    }
+    40% {
+        background-position: 40% 20%, 20% 40%;
+    }
+    50% {
+        background-position: 50% 25%, -25% 50%;
+        filter: blur(0.5px);
+    }
+    60% {
+        background-position: 60% 30%, 30% 60%;
+    }
+    70% {
+        background-position: 70% 35%, -35% 70%;
+        filter: blur(1px);
+    }
+    80% {
+        background-position: 80% 40%, 40% 80%;
+    }
+    90% {
+        background-position: 90% 45%, -45% 90%;
+        filter: blur(0.5px);
+    }
+    100% {
+        background-position: 100% 50%, 50% 100%;
+        filter: blur(0);
+    }
+}
+
+/* æ–°å¢ï¼šè§¦å‘é›ªèŠ±æ•ˆæœçš„ç±» */
+.tv-static {
+    background: 
+        repeating-linear-gradient(
+            0deg,
+            #0d0d0d,
+            #1a1a1a 1px,
+            #0d0d0d 2px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            #0d0d0d,
+            #1a1a1a 1px,
+            #0d0d0d 2px
+        ),
+        repeating-linear-gradient(
+            45deg,
+            rgba(255, 255, 255, 0.1),
+            rgba(255, 255, 255, 0.1) 1px,
+            rgba(255, 255, 255, 0.05) 2px
+        );
+    background-size: 100% 2px, 2px 100%, 10px 10px;
+    animation: tv-static 0.1s infinite alternate;
+}
+
+/* æ–°å¢: åè‰²æ•ˆæœç±» */
+.invert-effect {
+    filter: invert(100%);
+    transition: filter 0.3s ease-in-out;
+}
+
+/* å¼€åœºåŠ¨ç”»å®¹å™¨ */
 #intro {
     position: fixed;
     top: 0;
@@ -73,7 +148,7 @@ body::after {
     pointer-events: all;
 }
 
-/* »ğÑæĞ§¹û - ¸Ä½ø */
+/* ç«ç„°æ•ˆæœ - æ”¹è¿› */
 .flame-container {
     width: 120px;
     height: 180px;
@@ -132,7 +207,7 @@ body::after {
     border-radius: 10px;
     max-width: 600px;
     width: 90%;
-    /* ĞŞ¸Ä£º½« justify-content ´Ó center ¸ÄÎª flex-start£¬²¢Ìí¼Ó margin-right À´Ïò×óÒÆ¶¯ */
+    /* ä¿®æ”¹ï¼šå°† justify-content ä» center æ”¹ä¸º flex-startï¼Œå¹¶æ·»åŠ  margin-right æ¥å‘å·¦ç§»åŠ¨ */
     display: flex; 
     flex-direction: column; 
     justify-content: center;
@@ -163,7 +238,7 @@ p {
     justify-content: center;
     align-items: center;
     gap: 15px;
-    flex-direction: column; /* ĞÂÔö: ¸ü¸ÄÎª´¹Ö±²¼¾Ö */
+    flex-direction: column; /* æ–°å¢: æ›´æ”¹ä¸ºå‚ç›´å¸ƒå±€ */
 }
 
 input[type="text"] {
@@ -197,7 +272,7 @@ button {
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
     box-shadow: 0 4px 10px rgba(255, 0, 0, 0.4);
-    margin-top: 15px; /* ĞÂÔö: Ôö¼ÓÓëÊäÈë¿òµÄ¼ä¾à */
+    margin-top: 15px; /* æ–°å¢: å¢åŠ ä¸è¾“å…¥æ¡†çš„é—´è· */
 }
 
 button:hover {
@@ -220,7 +295,7 @@ button:active {
     box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
 }
 
-/* ĞÂÔö: µ¯´°ÈİÆ÷µÄÑùÊ½ */
+/* æ–°å¢: å¼¹çª—å®¹å™¨çš„æ ·å¼ */
 #popupContainer {
     position: fixed;
     top: 0;
@@ -260,7 +335,7 @@ button:active {
     transform: scale(1);
 }
 
-/* 404 Ò³ÃæÑùÊ½ */
+/* 404 é¡µé¢æ ·å¼ */
 body.four-oh-four {
     background-color: #ffffff;
     color: #ffffff;
@@ -311,7 +386,7 @@ body.four-oh-four {
     }
 }
 
-/* ±Ë°¶»¨¶¯»­ */
+/* å½¼å²¸èŠ±åŠ¨ç”» */
 .lycoris {
     position: absolute;
     bottom: -50px;
